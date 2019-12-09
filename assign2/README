@@ -1,0 +1,60 @@
+Young's modulus
+author: Ming Huang
+
+Before you start this project, some terms you need to check online and get understand:
+-- Periodic boundary conditions (PBC)
+-- Equilibrium simulation (EMD) and non-Equilibrium simulation (NEMD)
+
+In this little project you need to finish the following tasks:
+--> Equilibrate initial structure 'eql.gro'
+--> Non-equilibrium simulations (x, y and z directions)
+    --> Extract pressure tensor and box length change from the energy files
+--> Using python script to analyze the pressure tensor and box length change which from the energy file (Transfer them to stress and strain)
+    --> Using python script to extract needed data from x direction's energy file		
+	--> Using python script to plot the stress and strain curve (Test for stress only along x direction)
+            --> Fit the stress value with 1%, 2% and 5% strain range, and plot the line on the figure
+	        --> Do the same analysis for y and z directions
+--> (option) Using python script to extract data from all directions file and merge the pressure tensor data (x, y and z)
+    --> Do the similar above analysis steps and compare the difference
+
+1. Equilibrate the initial structure 'eql.gro'
+-- Besides the energy minimization, usually we also need an additional MD step to equilibrate the structure (NVT or NPT). In this step, you need to conduct an NPT simulations to help you do this equilibrate step
+
+-- To justify whether a system is well equilibrated, you can check system's pressure/volume, potential energy, total energy. Every value needs to become converged. (Converged means it will become fluctuate around one value). You need to tune the MD simulation time to make sure above values become converged and generate the plot to show them have been converged. The 'npt.mdp' file is just an example, the simulation time in it cannot promise the system has been converged
+
+-- The GMX commands you may need
+gmx grompp -f *.mdp -c *.gro -p *.top -o (name) -maxwarn 10
+gmx mdrun -deffnm name -v -rdd 0.5 (this -rdd option is necessary to add, since there are bonds across the boundary, GMX cannot automatically help you slice the whole box and do the parallel MD simulations, this option can help it do the slice work)
+
+2. Non-equilibrium MD simulations
+-- Non-equilibrium simulations is a general called of a type of simulations. If you want to know more details you can read this paper ([1]). In my words, non-equilibrium simulaition is people introduced some external perturbations (or in other word energy) to the system, to make the object start moving along the direction that people want. 
+In this study, to simulate the procedure that people use to test material Young's modulus, we need to simulate the procedure that apply a force on the material and make it stretch. To do this, we need to conduct a type of MD simulation called non-equilibrium simulation on our equilibrated structure. This procedure you can call it a uniaxial elongation simulations, which simulate the procedure that stretch the material along one directions. To get more undertand on this procedure, you can read following two articles ([2], [3]).
+
+-- The mdp files ('npt-x.mdp', 'npt-y.mdp', 'npt-z.mdp') can help you do this NEMD using GROMACS. Some places you need to take care
+    -- Notice the differences of the mdp files between an EMD and an NEMD
+    -- Temperature should be consistant with one you conduct equilbirate simulation
+    -- Pressure and compressibility along the pulling direction should be zero
+    -- Be aware of the velocity you set in the mdp file is the box deformation rate. Get more details on http://manual.gromacs.org/archive/5.0/online/mdp_opt.html
+    -- Understand how to transfer the deformation to the strain rate
+    -- Conduct your NEMD simulations along x, y and z direction under strain rate = 1e9
+    -- After NEMD simulations are finished, extract the pressure tensor pxx, pyy and pzz from the .edr file using gmx_energy command (maybe some others like gmx energy or gmx_mpi energy)
+
+3. Using python script to analyze the pressure tensor and box length change 
+-- Following steps need to be finished in python environment:
+    -- Read the pxx data from the file which generated from gmx energy and save to a list which can be called as pxx
+    -- Read the x distance data from the file and save to list which called x_dist
+    -- Get the initial simulation box length l0
+    -- Using equation (l-l0)/l0 to calculate the strain. And save this to the list x_strain
+    -- Stress = -pxx and save stress to the list x_stress
+    -- plot the x_stress vs x_strain
+    -- Extract the data (stress and strain) within range x_strain < 0.01(or 0.02, 0.05) and save to the list x_fit
+    -- Linear fit the data in the x_fit
+    -- Plot all the list you get (stress vs strain, linear fit of specific region)
+
+4. Think about how to write a bash script to automatically help you do the MD simulaitons
+
+Cited papers
+[1] Nonequilibrium molecular dynamics, Wm.G.Hoover, C.G.Hoover, Condensed Matter Physics, 2005, Vol. 8, No. 2(42), pp. 247–260.
+[2] High strain rate mechanical properties of a cross-linked epoxy across the glass transition, Timothy Sirk, Ketan Khare, Rajesh Khare, Plymer 54(2013) 7048-7057
+[3] Molecular dynamics simulations of uniaxial deformation of thermoplastic polyimides, V. M. Nazarychev, S. V. Lyulin, SoftMatter, 2016, 12, 3972
+
