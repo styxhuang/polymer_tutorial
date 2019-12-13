@@ -1,4 +1,4 @@
-Young's modulus
+Using molecular simulation to estimate Young's modulus with GROMACS software
 author: Ming Huang
 
 Before you start this project, some terms you need to check online and get understand:
@@ -40,6 +40,7 @@ In this study, to simulate the procedure that people use to test material Young'
     -- After NEMD simulations are finished, extract the pressure tensor pxx, pyy and pzz from the .edr file using gmx_energy command (maybe some others like gmx energy or gmx_mpi energy)
 
 3. Using python script to analyze the pressure tensor and box length change 
+-- Using file 300-sim3-x-pressure-*xvg to do the estimation
 -- Following steps need to be finished in python environment:
     -- Read the pxx data from the file which generated from gmx energy and save to a list which can be called as pxx
     -- Read the x distance data from the file and save to list which called x_dist
@@ -52,6 +53,7 @@ In this study, to simulate the procedure that people use to test material Young'
     -- Plot all the list you get (stress vs strain, linear fit of specific region)
 
 4. Think about how to write a bash script to automatically help you do the MD simulaitons
+-- Understand the logic of the bash script youngs-ana.sh
 
 Cited papers
 [1] Nonequilibrium molecular dynamics, Wm.G.Hoover, C.G.Hoover, Condensed Matter Physics, 2005, Vol. 8, No. 2(42), pp. 247–260.

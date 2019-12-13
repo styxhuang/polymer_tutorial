@@ -1,0 +1,25 @@
+Basic knowledge to start project
+
+To start this project, following softwares may need
+-- Linux environment text editor
+  -- vim, emacs, etc.
+
+-- Linux environment plot software
+  -- gnuplot, python, matlab, etc. (Exclude Excel)
+
+-- Programing languages may need
+  -- UNIX (bash script)
+  -- python3
+
+-- Molecular simulation engine
+  -- GROMACS
+
+-- Visualization software
+  -- VMD, AVOGADRO
+
+Softwares like, vim, gnuplot, VMD, AVOGADRO, can be learned during the project. 
+
+GROMACS
+
+Do the following tutorial to get a basic understand about molecular dynamic simulation and GROMACS
+http://www.mdtutorials.com/gmx/lysozyme/index.html
