@@ -27,8 +27,8 @@ gmx grompp -f *.mdp -c *.gro -p *.top -o (name) -maxwarn 10
 gmx mdrun -deffnm name -v -rdd 0.5 (this -rdd option is necessary to add, since there are bonds across the boundary, GMX cannot automatically help you slice the whole box and do the parallel MD simulations, this option can help it do the slice work)
 
 2. Non-equilibrium MD simulations
--- Non-equilibrium simulations is a general called of a type of simulations. If you want to know more details you can read this paper ([1]). In my words, non-equilibrium simulaition is people introduced some external perturbations (or in other word energy) to the system, to make the object start moving along the direction that people want. 
-In this study, to simulate the procedure that people use to test material Young's modulus, we need to simulate the procedure that apply a force on the material and make it stretch. To do this, we need to conduct a type of MD simulation called non-equilibrium simulation on our equilibrated structure. This procedure you can call it a uniaxial elongation simulations, which simulate the procedure that stretch the material along one directions. To get more undertand on this procedure, you can read following two articles ([2], [3]).
+-- Non-equilibrium simulations is a general called of a type of simulations(such as uniaxial elongation simulation, steered molecular simulation). If you want to know more details you can read this paper ([1]). In my words, non-equilibrium simulaition is people introduced some external perturbations (or in another word 'energy') to the system, to make the object start moving along the direction that people want. 
+In this study, to simulate the procedure that people use to test material Young's modulus, we need to simulate the procedure that apply a force on the material and make it stretch. To do this, we need to conduct a type of MD simulation called non-equilibrium simulation on our simulation box. This procedure you can call it a uniaxial elongation simulations, which simulate the procedure that stretch the simulation box along one directions. To get more undertands on this procedure, you can read following two articles ([2], [3]).
 
 -- The mdp files ('npt-x.mdp', 'npt-y.mdp', 'npt-z.mdp') can help you do this NEMD using GROMACS. Some places you need to take care
     -- Notice the differences of the mdp files between an EMD and an NEMD
@@ -51,9 +51,23 @@ In this study, to simulate the procedure that people use to test material Young'
     -- Extract the data (stress and strain) within range x_strain < 0.01(or 0.02, 0.05) and save to the list x_fit
     -- Linear fit the data in the x_fit
     -- Plot all the list you get (stress vs strain, linear fit of specific region)
+-- Script 'youngs.py' is an example python3 script to help you obtain the youngs modulus from the origin data file. However, it still has place needed to be optimize. Finish following tasks
+    -- Read the python3 script and undertand the logic of the script
+    -- Make an optimization of the script
+       -- Add notes on different functions
+       -- Extract functions, make sure each function only do one job. For example, 'def avg(data): xxxx' will only average the input data and output data
+       -- Remove useless functions
 
 4. Think about how to write a bash script to automatically help you do the MD simulaitons
 -- Understand the logic of the bash script youngs-ana.sh
+
+Optional task
+-- Conduct the NEMD simulation on the system under temperature 600K
+   -- To start a NEMD simulation at different temperature, an EMD simulation should conduct first, which used to equilibrate the system at given temperature. Then starts the NEMD
+
+-- Develop function in python3 script which can do the moving average on the data
+   -- Need to understand the definition of moving average (MA)
+   -- Need to test data to prove the function works fine
 
 Cited papers
 [1] Nonequilibrium molecular dynamics, Wm.G.Hoover, C.G.Hoover, Condensed Matter Physics, 2005, Vol. 8, No. 2(42), pp. 247–260.

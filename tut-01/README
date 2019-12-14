@@ -17,7 +17,7 @@ To start this project, following softwares may need
 -- Visualization software
   -- VMD, AVOGADRO
 
-Softwares like, vim, gnuplot, VMD, AVOGADRO, can be learned during the project. 
+Softwares like, vim, gnuplot, VMD, AVOGADRO, can be learned during the project. There are web resources to learn basic operations 
 
 GROMACS
 
@@ -49,6 +49,7 @@ This tutorial needs to pay attention on the following things:
   -- Visualize the protein/water behavior
 
 -- Analyze energy file
+  (Using 'gmx energy' to analyze the energy file)
   -- EM
     -- Understand what EM simulation is doing 
     -- Analyze the potential energy
@@ -59,7 +60,7 @@ This tutorial needs to pay attention on the following things:
     -- Understand what NPT simulation is doing
        -- Read the manual what is pressure coupling method and how to control it
     -- Analyze the potential energy, volume, pressure, temperature
-  -- Compare the energy term of different types of simulation
+  -- Compare the energy terms of different types of simulation
 
 -- Using Gnuplot or python3 or matlab to plot different energy terms vs. time
 
