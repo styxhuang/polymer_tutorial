@@ -21,5 +21,51 @@ Softwares like, vim, gnuplot, VMD, AVOGADRO, can be learned during the project.
 
 GROMACS
 
-Do the following tutorial to get a basic understand about molecular dynamic simulation and GROMACS
-http://www.mdtutorials.com/gmx/lysozyme/index.html
+Do the following tutorial to get a basic understand about molecular dynamic simulation and GROMACS (Tutorial details please check 'http://www.mdtutorials.com/gmx/lysozyme/index.html')
+This tutorial simulate the behavior of the lysozyme in the water which also neutralize with ions
+
+This tutorial needs to pay attention on the following things:
+-- All GROMACS command can get its help document by 'gmx $COMMAND -h'
+-- Understand the following terms definition
+  -- forcefield
+  -- Energy minimization/NVT simulation/NPT simulation/NVE simulation
+  
+-- Understand the GROMACS file format (Details can check the GROMACS manual v2016.2)
+  -- structure file (.gro) and topology file (.top, .itp)
+
+-- Setup system
+  -- Grap protein from protein data base (PDB)
+  -- Using pdb2gmx convert .pdb to .gro file 
+  -- Put the protein (.gro) in the middle of the box, put water inside of the box, and assign ions to neutralize the system
+
+-- Conduct different types of simulation
+  -- Energy minimization (EM), NVT, NPT
+
+-- Using VMD to visualize the system's trajectory
+  -- Open VMD from terminal
+  -- Load protein .gro file
+  -- Load .trr/.xtc file to the .gro file
+  -- In the 'Representation' options (Graphics --> Representations), create three groups ('Protein', 'ions', 'system') which only contain relative atoms
+  -- Visualize the protein/water behavior
+
+-- Analyze energy file
+  -- EM
+    -- Understand what EM simulation is doing 
+    -- Analyze the potential energy
+  -- NVT
+    -- Understand what NVT simulation is doing
+    -- Analyze the potential energy, volume, temperature 
+  -- NPT
+    -- Understand what NPT simulation is doing
+       -- Read the manual what is pressure coupling method and how to control it
+    -- Analyze the potential energy, volume, pressure, temperature
+  -- Compare the energy term of different types of simulation
+
+-- Using Gnuplot or python3 or matlab to plot different energy terms vs. time
+
+Optional task
+-- Conduct an NVE simulation (constant number of particle, volume, energy)
+   -- Understand the concept of NVE simulation
+   -- Analyze the system's potential energy, kinetic energy, total energy
+   -- Compare the energy plot with NVT, NPT simulations and try to understand the difference
+   
