@@ -1,0 +1,61 @@
+title       = NPT Equilibration 
+;define      = -DPOSRES          ; position restrain the protein
+; Run parameters
+integrator  = md                ; leap-frog integrator
+nsteps      = 69000000             ; 2 * 50,000 = 100 ps
+dt          = 0.001             ; 2 fs
+; Output control
+nstxout     = 0              ; save coordinates every 2 ps
+nstvout     = 0              ; save velocities every 2 ps
+nstxtcout   = 50000
+nstenergy   = 5000              ; save energies every 2 ps
+nstlog      = 50000              ; update log file every 2 ps
+; Bond parameters
+continuation         = no        ; Initial simulation 
+constraint_algorithm = lincs     ; holonomic constraints 
+constraints          = none ; all bonds (even heavy atom-H bonds) constrained
+; Neighborsearching
+ns_type     = grid              ; search neighboring grid cels
+nstlist     = 5                 ; 10 fs
+rlist       = 1.2               ; short-range neighborlist cutoff (in nm)
+rcoulomb    = 1.2               ; short-range electrostatic cutoff (in nm)
+rvdw        = 1.2               ; short-range van der Waals cutoff (in nm)
+; Electrostatics
+coulombtype     = PME           ; Particle Mesh Ewald for long-range electrostatics
+vdw_type	= cut-off
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+; Temperature coupling is on
+tcoupl      = Nose-Hoover             ; Weak coupling for initial equilibration 
+tc-grps     = System
+tau_t       = 0.1         	    ; time constant, in ps
+ref_t       = 260      		    ; reference temperature, one for each group, in K
+; Pressure coupling is on
+pcoupl              = Parrinello-Rahman     ; Pressure coupling on in NPT, also weak coupling
+pcoupltype          = isotropic     ; uniform scaling of x-y-z box vectors
+tau_p               = 1           ; time constant, in ps
+ref_p               = 1.0
+compressibility     = 4.5e-7
+refcoord_scaling    = com
+; Periodic boundary conditions
+pbc     = xyz                   ; 3-D PBC
+; Dispersion correction
+DispCorr    = EnerPres          ; account for cut-off vdW scheme
+
+; COM motion removal
+; These options remove COM motion of the system
+nstcomm         = 10
+comm-mode       = Linear
+comm-grps       = System 
+table-extension	= 1
+
+; Simulated annealing
+annealing   = single
+annealing_npoints = 39
+annealing_time 	  = 0 8000 16000 24000 26000 26500 28500 29000 31000 31500 33500 34000 36000 36500 38500 39000 41000 41500 43500 44000 46000 46500 48500 49000 51000 51500 53500 54000 56000 56500 58500 59000 61000 61500 63500 64000 66000 66500 68500
+annealing_temp	  = 260 600 260 600 600 580 580 560 560 540 540 520 520 500 500 480 480 460 460 440 440 420 420 400 400 380 380 360 360 340 340 320 320 300 300 280 280 260 260

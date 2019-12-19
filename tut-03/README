@@ -1,0 +1,33 @@
+Using Molecular Dynamic(MD) simulation to estimate system glass transition temperature (Tg)
+Author: Ming Huang
+
+Before you start this tutorial, some terms you need to check online and get understand:
+-- Glass transition temperature (Tg) 
+   -- https://en.wikipedia.org/wiki/Glass_transition
+-- Simulated annealing protocol (GROMACS)
+   -- http://manual.gromacs.org/documentation/2019/reference-manual/algorithms/simulated-annealing.html
+
+In this tutorial, you need to finish the following tasks:
+--> Equilibrate initial structure 'eql.gro'
+--> Simple annealing MD simulation
+--> Annealing simulation tests
+--> A complete annealing simulation
+--> Analyze the relation between system volume and temperature
+
+Detailed procedures:
+1. Equilibrate initial structure 'eql.gro'
+-- Same as we have done before
+
+2. Simple annealing MD simualtion
+-- Using the well equilibrated structure, and 'anneal-1.mdp' to start the annealing simulation
+-- After the simulation is finished, extract the volume and temperature from the energy file
+-- Generate the figures: volume vs time, temperature vs time, volume vs temperature
+
+3. Annealing test
+# Multiple loop, forget the criteria how many loop we need to remove the internal pressure of the structure
+
+4. A complete annealing simulation
+-- Using the well equilibrated structure, and 'anneal-2.mdp' to start the annealing simulation
+-- Plot the figures as we decribed in step 2.
+-- Analyze the results 
+
