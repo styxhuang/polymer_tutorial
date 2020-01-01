@@ -1,33 +1,64 @@
-Using Molecular Dynamic(MD) simulation to estimate system glass transition temperature (Tg)
+Using Molecular Dynamic (MD) simulation to estimate system glass transition temperature(Tg)
 Author: Ming Huang
 
 Before you start this tutorial, some terms you need to check online and get understand:
 -- Glass transition temperature (Tg) 
    -- https://en.wikipedia.org/wiki/Glass_transition
--- Simulated annealing protocol (GROMACS)
-   -- http://manual.gromacs.org/documentation/2019/reference-manual/algorithms/simulated-annealing.html
+   -- Simulated annealing protocol (GROMACS)
+      -- http://manual.gromacs.org/documentation/2019/reference-manual/algorithms/simulated-annealing.html
 
-In this tutorial, you need to finish the following tasks:
+Glass transition temperature:
+
+Glass transition temperature is one of the important material thermal properties. Materials' behavior is different when the material in the glassy state and rubbery state. Usually we track volume changes with temperture. We know usually the material's volume will expand when temperature increases. However, the speed of the volume changing is different. The changing speed is seperated when material's behavivor changes from glassy to rubbery. And the temperature of this kink is the glass transition temperature short as Tg. In MD simulation, we also use this criteria to help us find Tg. An annealing MD simulation can help us do this work. 
+
+Annealing MD simulation can be interprated as MD simulation with temperature changing. GROMACS has implemented this usage in the software. By setting temperature point in the mdp file, we can easily control the temperature at different time points. For more details, you can check the mdp explaination online. In the folder, I put an example mdp file in the folder. In a normal NPT or NVT simulation, the temperature is constant, with Nose-Hover temperature coupling method to keep the system temperature fluctuate around the temperature we set. But in the annealing simulation, three lines need to be added to the file. "Annealing-points, Annealing-time, Annealing-temperature". Annealing points means how many temperature points you want to insert during the simulation(Include the original temperature point). Annealing-time defines the time point where temperature may change. Annealing-temperature means the temperature set point at each time point. With these mdp options, GROMACS can conduct the annealing MD simulaitons. 
+
+Goal:
+
+In this tutorial, you need to learn to using MD simulation to obtain VE-STY material's simulation Tg, and compare to the experiment Tg (~420K). Following tasks need to be finished:
 --> Equilibrate initial structure 'eql.gro'
 --> Simple annealing MD simulation
 --> Annealing simulation tests
 --> A complete annealing simulation
 --> Analyze the relation between system volume and temperature
 
-Detailed procedures:
-1. Equilibrate initial structure 'eql.gro'
--- Same as we have done before
+Procedures:
 
-2. Simple annealing MD simualtion
--- Using the well equilibrated structure, and 'anneal-1.mdp' to start the annealing simulation
--- After the simulation is finished, extract the volume and temperature from the energy file
--- Generate the figures: volume vs time, temperature vs time, volume vs temperature
+--> Prepare the initial structure and relative topology file (Under the folder)
+--> Equilibrate the initial structure 'eql.gro' at initial temperature (260K)
+   -- Usually in simulation, the temperature range is larger than experiment. According to my experience, due to the time scale, the simulation temperature is not directly relate to the experiment value. Especially when temperature goes up. Since in MD simulation, the chemical bonds cannot be broken, temperature can go extremely high. Due to this mismatch on the temperature, when we conduct the annealing simulation, we need to select a wider temperature range. Temperature range selection needs to accord to the materials. In this tutorial, the system is VE-STY netork. We need to make sure the lowest temperature we select during the annealing simulation should deep into material's glassy state and also the highest temperature should deep in the rubbery region. 
 
-3. Annealing test
-# Multiple loop, forget the criteria how many loop we need to remove the internal pressure of the structure
+--> Conduct the annealing simulation
+   -- Since the initial topology usually just finished the topology creation, it may contain internal pressure. These initernal pressure may affect the system's volume change. We need to get rid of these side affect first before we collect the volume data which used to calculate the Tg. Conduct a quickly heated up and cooling down procedure cycle can help us get rid off this effect.
+   	260 --> 800 --> 260 --> 800 --> 260
+--> A complete annealing simulation
+   -- As describe above, the temperature range we select here is from 260K - 800K, with a 20K interval. At each temperature, we also need a 2ns equilibrium step. As below:
+	Annealing-time	10	12	17	19	24	26	...
+	Annealing-temp	260	260	280	280	300	300	...
 
-4. A complete annealing simulation
--- Using the well equilibrated structure, and 'anneal-2.mdp' to start the annealing simulation
--- Plot the figures as we decribed in step 2.
--- Analyze the results 
+-- Extract data
+   As above description, not all annealing simulation's data need to be used. For the first several nanoseconds, it is the annealing cycle which used to remove the internal pressure, which has no relation with the Tg estimation. And on every temperature point, we conduct a 2ns const temperature simulation, which we only need the last 1ns data. A bash script is needed to help extract relative time range volume data.
+   GMX commands: gmx energy -f XXX.edr -o 2ns.xvg -b 0 -e 2
+   example bash script is in the folder
+
+-- Analysis data
+   Up to here, you have generated a series file, which contains the volume data at different time ranges. We need to use a python script to analyze the volume data. 
+   Functions: (Developed functions with following usage)
+     -- Read data to the python environment. Import parameters: file name. Return parameters: time, volume
+     	A series GMX files generated, they all folow the format (colume 1: time, colume 2: volume). All files data should export to the python script
+     -- Average data. Import parameters: time, volume. Return parameters: new_time, new_volume
+     	Every data from the 1st function, which contains the 1ns volume data, for every file, we just need one average volume to represent the volume data from that file. Time is also can use the average time
+     -- Merge same type data to one array
+     	file1 data --> new_time1, new_volume1
+	file2 data --> new_time2, new_volume2
+	...
+	==> time = [time1, time2,...]; vol = [volume1, volume2,...]
+     -- Plot the time and vol
+     -- Pick a glassy region and a rubbery region. 
+     	Since we know this VE-ST system's Tg is 420K, consider the mismatch of the simulation and experiment temperature, 260-340K should be in the glassy region. And 600-800K can be considered as rubbery region
+     -- Make a linear fit within two regions
+     -- Calculate the crosspoint of two linear lines
+     	This point is the Tg
+     -- Plot the linear fit line to the Vol vs. Temp figure. Also plot the crosspoint on the figure with note "Tg = XXX", XXX is the temperature point obtained from the calculation.
+
 
