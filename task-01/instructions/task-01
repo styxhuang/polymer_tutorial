@@ -1,0 +1,22 @@
+Task 1
+
+Conduct non-equilibrium simulation on the given system
+
+System:
+VE-ST with 95% conversion and k = 0.3
+
+MD simulation procedures
+
+1. Conduct a 5ns NPT simulation at 300K
+2. Conduct non-equilibrium simulations(NEMD) along x, y and z directions
+   -- All simulations under 300K
+   -- NEMD should stretch the box up to 10% strain, calculate the simulation base on this strain
+   -- Correct setting the mdp file
+3. Extract the data from MD simulations energy file and do the analysis
+
+Results:
+
+1. For step 1, plot the temperature vs. time, total energy vs. time and volume vs. time
+2. For step 2, all directions simulation, plot the strain length vs. time
+3. For step 3, using python generate the stress vs. strain curve. Inside the graph, besides thestress, strain data point, also include the linear fit line using data within 2% strain, calculate the slope of the linear line. Insert the note to the graph, which shows the young's modulus you estimate. Do the same thing for three directions. 
+
