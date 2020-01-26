@@ -3,7 +3,7 @@ Task 1
 Conduct non-equilibrium simulation on the given system
 
 System:
-VE-ST with 95% conversion and k = 0.3
+VE-ST with 95% conversion and k = 0.5
 
 MD simulation procedures
 

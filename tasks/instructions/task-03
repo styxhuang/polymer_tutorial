@@ -1,0 +1,27 @@
+Task 3
+
+Calculate multiple systems Young's modulus and take average of all systems
+
+Background
+
+Up to now, you know how to conduct NEMD on the particular system. However, usually to make sure the Young's modulus we obtained is generalized, we need to calculate the properties (E, Tg etc.) on multiple replicas (similar systems). The number of replicas is depended on the system size (Usually if the system size is small, the number of replicas will increase). In our study, since the system size you used is 5*5*5 nm^3, you need at least 10 replicas to finish. Due to the limiation of the computational resource you have, you just need to 5 replicas to finish this task. 
+
+Goal
+
+The goal of this task is 
+1. To develop you own script to calculate the Young's modulus average over all replicas 
+  - Average approach
+    - Extract all replicas' stress and strain data into one file and calculate the Young's modulus. The error bar should be the fitting error bar.
+  
+2. Compare the difference between the average Young's modulus and Young's modulus for particular system (task-01)
+
+System
+
+
+MD simulation procedures
+
+Repeats the EMD and NEMD in task-01 at 300K on all 5 replicas. Remember to release the internal stress
+
+Results
+
+1. Show the average Young's modulus and compare with the results of task-01
