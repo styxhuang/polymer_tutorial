@@ -1,0 +1,25 @@
+Task 3
+
+Calculate systems Young's modulus and take average of all replicas
+
+Goal
+
+These systems are partially cured at first and all free styrene molecules are removed. You need to measure these system's Young's modulus
+
+System
+
+All systems you can find under the folder "/home/ming/ming/model/315VE-1020STY/del-sys/wo-VE-del". Copy all the contents to your folder. And this time, you just need to measure the E of systems which k=0.5 (Systems in k0.5 folder). 
+
+MD simulation procedures
+
+1. Since all these systems are just cured. You need to release the internal stress of the system. So you need a 5ns 800K NPT simulations and followed by a 2ns 260K NPT simulations
+2. After above step, you can obtain a well equilibrated structure. Use this structure to measure the Young's modulus as you did before.
+3. Repeat above steps for all replicas.
+
+This time the system size is relative big. You need to submit these jobs to proteus. Under this folder there is a proteus script "sub". Please modified it with you needed. More about the script please read the document on this site: https://proteusmaster.urcf.drexel.edu/urcfwiki/index.php/Writing_Job_Scripts
+
+There is a 48 hours time limit for each job you submit to the proteus. I suggest you need to estimate the efficiency of you simulation by running a short NPT simulation test first. Then calculate how much time you need. Proteus has a priority algorithm, you need to make sure the wall time should be similar as you calculated. 
+
+Results
+
+1. Show the average Young's modulus of all systems. 

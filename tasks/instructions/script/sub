@@ -1,0 +1,27 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -M mh3429@drexel.edu ### Change to you email adress
+#$ -P abramsMHPrj ### I suppose proteus guy should give you this
+#$ -cwd
+#$ -j y
+#$ -q all.q
+#$ -R y
+#$ -pe fixed16 64 ### This is the number of the processors you ask
+#$ -l h_rt=24:00:00 ### This is the wall time
+#$ -l m_mem_free=2G 
+#$ -l h_vmem=3G
+#$ -l vendor=intel
+
+. /etc/profile.d/modules.sh
+module load shared
+module load proteus
+module load gcc/4.8.1
+module load proteus-openmpi/intel/2015/1.8.1-mlnx-ofed
+module load python/intel/2015/3.6.2
+module load gromacs/intel/2015/2016.2
+
+### Put the MD command you need here
+gmx grompp -f anneal-2.mdp -c npt.gro -p init.top -o anneal1 -maxwarn 10
+$MPI_RUN gmx_mpi mdrun -deffnm anneal1 -v
+joberror=$?
+exit $joberror
